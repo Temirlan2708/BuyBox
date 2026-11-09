@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container product-page">
+    <a href="{{ url_for('catalog') }}" class="btn-secondary">← Вернуться в каталог</a>
+    <div class="product-details-grid">
+        <div class="product-gallery">
+            <img src="{{ images[0].url if images else url_for('static', filename='photos/1.jpg') }}" class="product-main-image" alt="{{ product.title }}">
+            <div class="product-thumbnails">
+                {% for img in images %}
+                <img src="{{ img.url }}" class="product-thumb {% if loop.first %}active{% endif %}" alt="миниатюра">
+                {% endfor %}
+            </div>
+        </div>
+        <div class="product-info-box">
+            <span class="card-category">{{ product.category }}</span>
+            <h1>{{ product.title }}</h1>
+            <p class="product-price-large">{{ "{:,.0f}".format(product.price).replace(',', ' ') }} ₸</p>
+            <p>Состояние: <strong>{{ product.condition }}</strong></p>
+            <p>Город: <strong>{{ product.city }}</strong></p>
+            
+            <div class="seller-card">
+                <p>Продавец: <strong>{{ product.seller_name }}</strong></p>
+                <p>Контакт: {{ product.seller_email }}</p>
+            </div>
+
+            <div class="product-actions">
+                <button class="btn-primary" onclick="alert('Контакты продавца: {{ product.seller_email }}')">Сообщение</button>
+                <button class="btn-secondary favorite-btn {% if is_favorite %}active{% endif %}" data-product-id="{{ product.id }}">❤️ В избранное</button>
+            </div>
+        </div>
+    </div>
+
+    <div style="background:#fff; padding:25px; border-radius:12px; margin-top:20px;">
+        <h3>Описание</h3>
+        <p style="margin-top:10px;">{{ product.description }}</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuyBox — Маркетплейс</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="{{ url_for('index') }}" class="logo">BuyBox</a>
+            <form action="{{ url_for('catalog') }}" method="GET" class="search-form">
+                <input type="text" name="q" placeholder="Что вы хотите найти?" value="{{ query | default('') }}">
+                <button type="submit" class="btn-search">Найти</button>
+            </form>
+            <nav class="nav-menu">
+                <a href="{{ url_for('index') }}">Главная</a>
+                <a href="{{ url_for('catalog') }}">Каталог</a>
+                <a href="{{ url_for('favorites_page') }}">Избранное</a>
+                <a href="{{ url_for('profile') }}">Профиль</a>
+            </nav>
+            <a href="{{ url_for('new_listing') }}" class="btn-primary">+ Разместить объявление</a>
+        </div>
+    </header>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <div class="footer-col">
+                <p class="footer-logo">BuyBox</p>
+                <p>Лучшая площадка для покупки и продажи товаров в вашем городе.</p>
+            </div>
+            <div class="footer-col">
+                <h4>О компании</h4>
+                <a href="#">О проекте</a>
+                <a href="#">Помощь</a>
+                <a href="#">Правила</a>
+            </div>
+            <div class="footer-col">
+                <h4>Поддержка</h4>
+                <a href="#">Центр поддержки</a>
+                <a href="#">Связаться с нами</a>
+            </div>
+        </div>
+    </footer>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" style="text-align:center; padding: 60px 20px;">
+    <h2>Ошибка</h2>
+    <p>{{ message }}</p>
+    <a href="{{ url_for('index') }}" class="btn-primary" style="margin-top:20px;">На главную</a>
+</div>
+{% endblock %}

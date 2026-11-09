@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Избранное</h2>
+    {% if favorites %}
+    <div class="products-grid">
+        {% for product in favorites %}
+        <div class="product-card">
+            <button class="card-favorite active" data-product-id="{{ product.id }}">❤️</button>
+            <a href="{{ url_for('product_detail', product_id=product.id) }}" style="text-decoration:none;">
+                <img src="{{ product.image_url or url_for('static', filename='photos/1.jpg') }}" alt="{{ product.title }}">
+                <div class="card-body">
+                    <span class="card-category">{{ product.category }}</span>
+                    <h3>{{ product.title }}</h3>
+                    <p class="card-price">{{ "{:,.0f}".format(product.price).replace(',', ' ') }} ₸</p>
+                    <span class="card-city">{{ product.city }}</span>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align:center; padding: 60px 20px; background:#fff; border-radius:12px; margin-top:20px;">
+        <h3>Здесь пока пусто</h3>
+        <p style="color:#6b7280; margin:10px 0 20px;">Добавляйте понравившиеся товары в избранное, чтобы не потерять их.</p>
+        <a href="{{ url_for('catalog') }}" class="btn-primary">Перейти в каталог</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

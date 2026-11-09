@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container profile-layout">
+    <div class="profile-sidebar">
+        <div class="user-avatar-card">
+            <h2>{{ user.name }}</h2>
+            <p>@{{ user.username }}</p>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Выйти</a>
+        </div>
+    </div>
+    
+    <div class="profile-content">
+        <div class="profile-header-row">
+            <h2>Мои объявления</h2>
+            <a href="{{ url_for('new_listing') }}" class="btn-primary">+ Новое объявление</a>
+        </div>
+
+        <div class="products-grid">
+            {% for product in active_products %}
+            <div class="product-card">
+                <a href="{{ url_for('product_detail', product_id=product.id) }}" style="text-decoration:none;">
+                    <img src="{{ product.image_url or url_for('static', filename='photos/1.jpg') }}" alt="{{ product.title }}">
+                    <div class="card-body">
+                        <h3>{{ product.title }}</h3>
+                        <p class="card-price">{{ "{:,.0f}".format(product.price).replace(',', ' ') }} ₸</p>
+                    </div>
+                </a>
+                <div class="card-owner-actions">
+                    <form action="{{ url_for('archive_listing', product_id=product.id) }}" method="POST">
+                        <button type="submit" class="btn-secondary">В архив</button>
+                    </form>
+                    <form action="{{ url_for('delete_listing', product_id=product.id) }}" method="POST">
+                        <button type="submit" class="btn-danger">Удалить</button>
+                    </form>
+                </div>
+            </div>
+            {% else %}
+            <p>У вас пока нет активных объявлений.</p>
+            {% endfor %}
+        </div>
+
+        <h2 style="margin-top:40px;">Архив объявлений</h2>
+        <div class="products-grid">
+            {% for product in archived_products %}
+            <div class="product-card">
+                <img src="{{ product.image_url or url_for('static', filename='photos/1.jpg') }}" alt="{{ product.title }}">
+                <div class="card-body">
+                    <h3>{{ product.title }}</h3>
+                    <p class="card-price">{{ "{:,.0f}".format(product.price).replace(',', ' ') }} ₸</p>
+                </div>
+                <div class="card-owner-actions">
+                    <form action="{{ url_for('archive_listing', product_id=product.id) }}" method="POST">
+                        <button type="submit" class="btn-primary">Опубликовать снова</button>
+                    </form>
+                </div>
+            </div>
+            {% else %}
+            <p>Архив пуст.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container catalog-layout">
+    <aside class="filters-sidebar">
+        <form method="GET" action="{{ url_for('catalog') }}" id="filter-form">
+            <h3>Категории</h3>
+            <div class="filter-group">
+                <label><input type="radio" name="category" value="" {% if not category %}checked{% endif %}> Все категории</label>
+                <label><input type="radio" name="category" value="Электроника" {% if category == 'Электроника' %}checked{% endif %}> Электроника</label>
+                <label><input type="radio" name="category" value="Одежда" {% if category == 'Одежда' %}checked{% endif %}> Одежда</label>
+                <label><input type="radio" name="category" value="Игры" {% if category == 'Игры' %}checked{% endif %}> Игры</label>
+                <label><input type="radio" name="category" value="Книги" {% if category == 'Книги' %}checked{% endif %}> Книги</label>
+            </div>
+            
+            <h3>Цена, ₸</h3>
+            <div class="price-inputs">
+                <input type="number" name="min_price" placeholder="От" value="{{ request.args.get('min_price', '') }}">
+                <input type="number" name="max_price" placeholder="До" value="{{ request.args.get('max_price', '') }}">
+            </div>
+
+            <h3>Сортировка</h3>
+            <select name="sort" class="form-control">
+                <option value="newest">Сначала новые</option>
+                <option value="cheapest" {% if request.args.get('sort') == 'cheapest' %}selected{% endif %}>Сначала дешевые</option>
+                <option value="expensive" {% if request.args.get('sort') == 'expensive' %}selected{% endif %}>Сначала дорогие</option>
+            </select>
+
+            <button type="submit" class="btn-primary full-width">Применить</button>
+            <button type="button" id="reset-filters" class="btn-secondary full-width">Сбросить фильтры</button>
+        </form>
+    </aside>
+
+    <section class="catalog-content">
+        <h2>Каталог товаров</h2>
+        <div class="products-grid">
+            {% for product in products %}
+            <div class="product-card">
+                <button class="card-favorite {% if product.id in favorites %}active{% endif %}" data-product-id="{{ product.id }}">❤️</button>
+                <a href="{{ url_for('product_detail', product_id=product.id) }}" style="text-decoration:none;">
+                    <img src="{{ product.image_url or url_for('static', filename='photos/1.jpg') }}" alt="{{ product.title }}">
+                    <div class="card-body">
+                        <span class="card-category">{{ product.category }}</span>
+                        <h3>{{ product.title }}</h3>
+                        <p class="card-price">{{ "{:,.0f}".format(product.price).replace(',', ' ') }} ₸</p>
+                        <span class="card-city">{{ product.city }}</span>
+                    </div>
+                </a>
+            </div>
+            {% else %}
+            <p>Ничего не найдено по вашему запросу.</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

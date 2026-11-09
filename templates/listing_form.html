@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="auth-box" style="max-width: 600px;">
+        <h2>Разместить объявление</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Название товара</label>
+                <input type="text" name="title" required>
+            </div>
+            <div class="form-group">
+                <label>Категория</label>
+                <select name="category" required>
+                    <option value="Электроника">Электроника</option>
+                    <option value="Одежда">Одежда</option>
+                    <option value="Игры">Игры</option>
+                    <option value="Книги">Книги</option>
+                    <option value="Другое">Другое</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Цена (₸)</label>
+                <input type="number" name="price" required>
+            </div>
+            <div class="form-group">
+                <label>Состояние</label>
+                <select name="condition" required>
+                    <option value="Новое">Новое</option>
+                    <option value="Б/У, хорошее">Б/У, хорошее</option>
+                    <option value="Б/У">Б/У</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Город</label>
+                <input type="text" name="city" value="Астана" required>
+            </div>
+            <div class="form-group">
+                <label>Описание</label>
+                <textarea name="description" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Фотография</label>
+                <input type="file" name="photo" accept="image/*">
+            </div>
+            <button type="submit" class="btn-primary full-width">Опубликовать</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

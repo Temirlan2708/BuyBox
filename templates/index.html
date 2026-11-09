@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <section class="hero-section">
+        <div class="container hero-text">
+            <h1>Покупай и продавай <span class="highlight">просто</span></h1>
+            <p>Находи нужные вещи и давай старым новую жизнь. Тысячи объявлений от реальных людей рядом с тобой.</p>
+            <a href="{{ url_for('catalog') }}" class="btn-primary" style="margin-top: 20px;">Смотреть объявления</a>
+            <div class="hero-stats">
+                <div><strong>{{ stats.products_count }}+</strong><span>Объявлений</span></div>
+                <div><strong>{{ stats.users_count }}+</strong><span>Продавцов</span></div>
+                <div><strong>98%</strong><span>Довольных</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="latest-products">
+        <h2>Последние объявления</h2>
+        <div class="products-grid">
+            {% for product in products %}
+            <div class="product-card">
+                <button class="card-favorite {% if product.id in favorites %}active{% endif %}" data-product-id="{{ product.id }}">❤️</button>
+                <a href="{{ url_for('product_detail', product_id=product.id) }}" style="text-decoration:none;">
+                    <img src="{{ product.image_url or url_for('static', filename='photos/1.jpg') }}" alt="{{ product.title }}">
+                    <div class="card-body">
+                        <span class="card-category">{{ product.category }}</span>
+                        <h3>{{ product.title }}</h3>
+                        <p class="card-price">{{ "{:,.0f}".format(product.price).replace(',', ' ') }} ₸</p>
+                        <span class="card-city">{{ product.city }}</span>
+                    </div>
+                </a>
+            </div>
+            {% else %}
+            <p>Пока нет активных объявлений.</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

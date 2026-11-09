@@ -1,0 +1,44 @@
+DROP TABLE IF EXISTS Favorites;
+DROP TABLE IF EXISTS ProductImages;
+DROP TABLE IF EXISTS Products;
+DROP TABLE IF EXISTS Users;
+
+CREATE TABLE Users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    username TEXT UNIQUE NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    price REAL NOT NULL,
+    category TEXT NOT NULL,
+    condition TEXT NOT NULL,
+    city TEXT NOT NULL,
+    status TEXT DEFAULT 'active',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE
+);
+
+CREATE TABLE ProductImages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_id INTEGER NOT NULL,
+    url TEXT NOT NULL,
+    position INTEGER DEFAULT 0,
+    FOREIGN KEY (product_id) REFERENCES Products (id) ON DELETE CASCADE
+);
+
+CREATE TABLE Favorites (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES Products (id) ON DELETE CASCADE,
+    UNIQUE(user_id, product_id)
+);
